@@ -8,16 +8,16 @@ export class Shipping {
   @Column()
   neighborhood: string;
 
-  @Column('float')
+  @Column('real')
   value: number;
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 
-  constructor(shipping?: Partial<Shipping>){
+  constructor(shipping?: Partial<Shipping>) {
     this.id = shipping?.id;
     this.neighborhood = shipping?.neighborhood;
     this.value = shipping?.value;

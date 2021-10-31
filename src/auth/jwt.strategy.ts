@@ -13,17 +13,17 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'secretOrKey',
+      secretOrKey: process.env.SECRET_KEY_JWT,
     });
   }
 
   async validate(payload: { id: number }) {
     const { id } = payload;
     const user = await this.userRepository.findOne({
-        where: {
-          id: id,
-          select: ['id', 'name', 'email', 'role'],
-        },
+      where: {
+        id: id,
+        select: ['id', 'name', 'email', 'role'],
+      },
     });
     if (!user) {
       throw new UnauthorizedException('Usuário não encontrado');

@@ -8,24 +8,24 @@ export class Addition {
   @Column()
   name: string;
 
-  @Column('float')
+  @Column('real')
   price: number;
 
-  @Column({default: true})
+  @Column({ default: true })
   status: boolean;
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 
-  constructor(addition?: Partial<Addition>){
+  constructor(addition?: Partial<Addition>) {
     this.id = addition?.id;
     this.name = addition?.name;
     this.price = addition?.price;
     this.status = addition?.status;
-    this.createdAt = addition?.createdAt;
-    this.updatedAt = addition?.updatedAt;
+    this.created_at = addition?.created_at;
+    this.updated_at = addition?.updated_at;
   }
 }

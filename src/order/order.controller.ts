@@ -18,7 +18,7 @@ export class OrderController {
     private readonly orderService: OrderService,
     private readonly orderProductService: OrderProductService,
     private readonly productService: ProductService
-    ) {}
+  ) { }
 
   @Get()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -31,8 +31,8 @@ export class OrderController {
   @Get('/paged')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   public async getPaged(@Res() res: Response, @Req() request: Request) {
-    const orderPaged = await this.orderService.findPaged(request.query); 
-    
+    const orderPaged = await this.orderService.findPaged(request.query);
+
     return res.status(HttpStatus.OK).json({
       total: orderPaged.total,
       page: orderPaged.page,
@@ -46,8 +46,8 @@ export class OrderController {
   @Get('/historic/paged')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   public async getHistoricPaged(@Res() res: Response, @Req() request: Request) {
-    const orderPaged = await this.orderService.findHistoricPaged(request.query); 
-    
+    const orderPaged = await this.orderService.findHistoricPaged(request.query);
+
     return res.status(HttpStatus.OK).json({
       total: orderPaged.total,
       page: orderPaged.page,
@@ -65,13 +65,13 @@ export class OrderController {
     return res.status(HttpStatus.OK).json(countOrders[0]);
   }
 
-  @Get('/:orderId')
+  @Get('/:order_id')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  public async getById(@Res() res, @Param('orderId') orderId: string): Promise<Orders> {
-    const order = await this.orderService.findById(orderId);
+  public async getById(@Res() res, @Param('order_id') order_id: string): Promise<Orders> {
+    const order = await this.orderService.findById(order_id);
 
     return res.status(HttpStatus.OK).json(order);
-  } 
+  }
 
   @Post()
   public async create(
@@ -107,17 +107,17 @@ export class OrderController {
     }
   }
 
-  @Put(':orderId')
+  @Put(':order_id')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   public async updateOrder(
     @Res() res,
     @Body() orderDto: OrderDto,
-    @Param('orderId') orderId: string
+    @Param('order_id') order_id: string
   ): Promise<any> {
     try {
-      let order = await this.orderService.findById(orderId);
-      if(order){
-        order = await this.orderService.update(orderDto, orderId);
+      let order = await this.orderService.findById(order_id);
+      if (order) {
+        order = await this.orderService.update(orderDto, order_id);
         await this.orderProductService.deleteProductFromOrder(order.id);
         await this.orderProductService.createOrderProduct(order.id, orderDto.products);
 
@@ -126,7 +126,7 @@ export class OrderController {
           status: HttpStatus.OK,
         });
       }
-      else{
+      else {
         return res.status(HttpStatus.OK).json({
           message: 'Pedido não encontrado.',
           status: HttpStatus.NOT_FOUND,
@@ -140,25 +140,25 @@ export class OrderController {
     }
   }
 
-  @Put('/:orderId/changeStatus')
+  @Put('/:order_id/changeStatus')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   public async update(
     @Res() res,
     @Body() orderStatus: any,
-    @Param('orderId') orderId: string
+    @Param('order_id') order_id: string
   ): Promise<any> {
     try {
-      const order = await this.orderService.findById(orderId);
-      if(order){
+      const order = await this.orderService.findById(order_id);
+      if (order) {
         order.status = orderStatus.status;
-        await this.orderService.updateStatus(order, orderId);
-  
+        await this.orderService.updateStatus(order, order_id);
+
         return res.status(HttpStatus.OK).json({
           message: 'Status atualizado com sucesso.',
           status: HttpStatus.OK,
         });
       }
-      else{
+      else {
         return res.status(HttpStatus.OK).json({
           message: 'Pedido não encontrado.',
           status: HttpStatus.NOT_FOUND,

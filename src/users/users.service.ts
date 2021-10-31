@@ -8,11 +8,11 @@ import { UserProfileDto } from './dto/user-profile.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
-export class UsersService{
+export class UsersService {
   constructor(
     @InjectRepository(Users)
     private readonly userRepository: Repository<Users>,
-  ) {}
+  ) { }
 
   public async findByEmail(email: string): Promise<Users> {
     const user = await this.userRepository.findOne({
@@ -30,7 +30,7 @@ export class UsersService{
 
   public async findAll() {
     const users = await this.userRepository.find({
-      select:["id", "name","username","email","role", "createdAt"]
+      select: ["id", "name", "username", "email", "role", "created_at"]
     });
     return users;
   }
@@ -45,12 +45,12 @@ export class UsersService{
     if (!user) {
       throw new NotFoundException(`Usuário #${userId} não encontrado`);
     }
-    
+
     delete user.password;
     delete user.name;
     delete user.email;
-    delete user.createdAt;
-    delete user.updatedAt;
+    delete user.created_at;
+    delete user.updated_at;
     return user;
   }
 
@@ -72,7 +72,7 @@ export class UsersService{
           .slice(-8),
         8,
       );
-      
+
       return await this.userRepository.save(user);
     } catch (err) {
       throw new HttpException(err, HttpStatus.BAD_REQUEST);
@@ -89,16 +89,16 @@ export class UsersService{
       if (!user) {
         throw new UnauthorizedException('E-mail inexistente');
       }
-  
+
       const passwordIsValid = bcrypt.compareSync(
         codVerificao,
         user.password,
       );
-  
+
       if (!passwordIsValid) {
         throw new UnauthorizedException('Código de verificação incorreto');
       }
-  
+
       user.password = bcrypt.hashSync(password, 8);
 
       return await this.userRepository.save(user);
@@ -110,14 +110,14 @@ export class UsersService{
 
   public async updateProfileUser(id: string, userProfileDto: UserProfileDto): Promise<Users> {
     try {
-      const user = await this.userRepository.findOne({id: +id});
+      const user = await this.userRepository.findOne({ id: +id });
       user.name = userProfileDto.name;
       user.email = userProfileDto.email;
       user.username = userProfileDto.username;
-      if(userProfileDto.role){
+      if (userProfileDto.role) {
         user.role = userProfileDto.role;
       }
-      
+
       return await this.userRepository.save(user);
     } catch (err) {
       throw new HttpException(err, HttpStatus.BAD_REQUEST);

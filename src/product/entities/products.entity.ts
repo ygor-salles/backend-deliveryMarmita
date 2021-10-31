@@ -10,37 +10,37 @@ export class Products {
   @Column()
   name: string;
 
-  @Column('float')
+  @Column('real')
   price: number;
 
   @Column()
   type: ProductType;
-  
-  @Column({nullable: true})
+
+  @Column({ nullable: true })
   size: ProductSize;
 
-  @Column({ type:'varchar', length: 4000})
+  @Column({ type: 'varchar', length: 4000 })
   description: string;
 
-  @Column({default: true})
+  @Column({ default: true })
   status: boolean;
 
-  @Column({nullable:true})
+  @Column({ nullable: true })
   image: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 
   @DeleteDateColumn()
-  deletedAt: Date;
+  deleted_at: Date;
 
   @OneToMany(() => OrderProduct, productToOrder => productToOrder.products)
   orderToProducts: OrderProduct[];
 
-  constructor(product?: Partial<Products>){
+  constructor(product?: Partial<Products>) {
     this.id = product?.id;
     this.name = product?.name;
     this.price = product?.price;
@@ -49,8 +49,8 @@ export class Products {
     this.description = product?.description;
     this.status = product?.status;
     this.image = product?.image;
-    this.createdAt = product?.createdAt;
-    this.updatedAt = product?.updatedAt;
+    this.created_at = product?.created_at;
+    this.updated_at = product?.updated_at;
     this.orderToProducts = product?.orderToProducts;
   }
 }

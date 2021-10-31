@@ -23,19 +23,19 @@ export class Users {
   role: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 
-  constructor(user?: Partial<Users>){
+  constructor(user?: Partial<Users>) {
     this.id = user?.id;
     this.name = user?.name;
     this.username = user?.username;
     this.email = user?.email;
     this.password = user?.password;
     this.role = user?.role;
-    this.createdAt = user?.createdAt;
-    this.updatedAt = user?.updatedAt;
+    this.created_at = user?.created_at;
+    this.updated_at = user?.updated_at;
   }
 }

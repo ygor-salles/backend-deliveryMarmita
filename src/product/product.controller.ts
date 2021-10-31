@@ -12,11 +12,10 @@ import { ProductService } from './product.service';
 
 @Controller('api/products')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(private readonly productService: ProductService) { }
 
   @Get()
   public async getAll(@Res() res, @Req() request): Promise<Products[]> {
-    // console.log(request.query)
     const products = await this.productService.findAll(request.query);
 
     return res.status(HttpStatus.OK).json(products);
@@ -33,8 +32,8 @@ export class ProductController {
     const { type }: any = request.query;
     limit = parseInt(limit || 0);
     page = parseInt(page || 0);
-    const productPaged = await this.productService.findPaged(limit, page, type); 
-    
+    const productPaged = await this.productService.findPaged(limit, page, type);
+
     return res.status(HttpStatus.OK).json({
       total: productPaged.total,
       page: productPaged.page,
@@ -45,15 +44,14 @@ export class ProductController {
     });
   }
 
-  @Get('/:productId')
-  public async getById(@Res() res, @Param('productId') productId: string): Promise<Products> {
-    // console.log(request.query)
-    const product = await this.productService.findById(productId);
+  @Get('/:product_id')
+  public async getById(@Res() res, @Param('product_id') product_id: string): Promise<Products> {
+    const product = await this.productService.findById(product_id);
 
-    if(product){
+    if (product) {
       return res.status(HttpStatus.OK).json(product);
     }
-    else{
+    else {
       return res.status(HttpStatus.NOT_FOUND).json({
         message: 'Produto não encontrado.',
         status: HttpStatus.NOT_FOUND,
@@ -69,17 +67,16 @@ export class ProductController {
     @Body() productDto: ProductDto
   ): Promise<any> {
     try {
-      // console.log(productDto)
-      if(productDto.image){
+      if (productDto.image) {
         const nameImage = (new Date()).valueOf().toString() + '.png';
-        // console.log(productDto)
+
         const base64Data = productDto.image.replace(/^data:image\/[a-z]+;base64,/, "");
-  
-        require("fs").writeFile(`./src/product/images/${nameImage}`, base64Data, 'base64', function(err) {
+
+        require("fs").writeFile(`./src/product/images/${nameImage}`, base64Data, 'base64', function (err) {
           console.log(err);
-          if(err != null){
+          if (err != null) {
             return res.status(HttpStatus.BAD_REQUEST).json({
-              message: 'Erro ao salvar imagem!'+err,
+              message: 'Erro ao salvar imagem!' + err,
               status: HttpStatus.BAD_REQUEST,
             });
           }
@@ -101,53 +98,53 @@ export class ProductController {
     }
   }
 
-  @Put('/:productId')
+  @Put('/:product_id')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Role(UserRole.ADMIN)
   public async update(
     @Res() res,
     @Body() productDto: ProductDto,
-    @Param('productId') productId: string
+    @Param('product_id') product_id: string
   ): Promise<any> {
     try {
-      const product = await this.productService.findById(productId);
-      if(product){
-        if(productDto.image){
+      const product = await this.productService.findById(product_id);
+      if (product) {
+        if (productDto.image) {
           console.log(product.image.split('images/'))
 
-          if(product.image != null){
+          if (product.image != null) {
             try {
               require('fs').unlinkSync(`./src/product/images/${product.image.split('images/')[1]}`)
               //file removed
-            } catch(err) {
+            } catch (err) {
               console.error(err)
             }
           }
 
           const nameImage = (new Date()).valueOf().toString() + '.png';
-          // console.log(productDto)
+
           const base64Data = productDto.image.replace(/^data:image\/[a-z]+;base64,/, "");
-    
-          require("fs").writeFile(`./src/product/images/${nameImage}`, base64Data, 'base64', function(err) {
-            // console.log(err);
-            if(err != null){
+
+          require("fs").writeFile(`./src/product/images/${nameImage}`, base64Data, 'base64', function (err) {
+
+            if (err != null) {
               return res.status(HttpStatus.BAD_REQUEST).json({
-                message: 'Erro ao salvar imagem!'+err,
+                message: 'Erro ao salvar imagem!' + err,
                 status: HttpStatus.BAD_REQUEST,
               });
             }
           });
           productDto.image = `products/images/${nameImage}`;
         }
-  
-        await this.productService.update(productDto, productId);
-  
+
+        await this.productService.update(productDto, product_id);
+
         return res.status(HttpStatus.OK).json({
           message: 'Produto atualizado com sucesso.',
           status: HttpStatus.OK,
         });
       }
-      else{
+      else {
         return res.status(HttpStatus.NOT_FOUND).json({
           message: 'Produto não encontrado.',
           status: HttpStatus.NOT_FOUND,
@@ -161,25 +158,25 @@ export class ProductController {
     }
   }
 
-  @Put('/:productId/update-status')
+  @Put('/:product_id/update-status')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   public async updateStatus(
     @Res() res,
     @Body() body: any,
-    @Param('productId') productId: string
+    @Param('product_id') product_id: string
   ): Promise<any> {
     try {
-      const product = await this.productService.findById(productId);
-      if(product){
+      const product = await this.productService.findById(product_id);
+      if (product) {
         product.status = body.status;
-        await this.productService.updateStatus(body, productId);
-  
+        await this.productService.updateStatus(body, product_id);
+
         return res.status(HttpStatus.OK).json({
           message: 'Status atualizado com sucesso.',
           status: HttpStatus.OK,
         });
       }
-      else{
+      else {
         return res.status(HttpStatus.NOT_FOUND).json({
           message: 'Produto não encontrado.',
           status: HttpStatus.NOT_FOUND,
@@ -200,15 +197,15 @@ export class ProductController {
     return res.status(HttpStatus.OK).json(order);
   }
 
-  @Delete("/:productId")
+  @Delete("/:product_id")
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Role(UserRole.ADMIN)
   public async delete(
     @Res() res,
-    @Param('productId') productId: string
+    @Param('product_id') product_id: string
   ): Promise<any> {
     try {
-      await this.productService.delete(productId);
+      await this.productService.delete(product_id);
 
       return res.status(HttpStatus.OK).json({
         message: "Produto deletado com sucesso.",

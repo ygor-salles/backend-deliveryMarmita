@@ -6,10 +6,10 @@ import { OrderDto } from './dto/order.dto';
 import { OrderStatus } from './order-status.enum';
 
 interface IOrderPaged {
-  total: number; 
+  total: number;
   page: number;
   totalPages: number;
-  limit: number; 
+  limit: number;
   offset: number;
   instaces: Orders[];
 }
@@ -19,7 +19,7 @@ export class OrderService {
   constructor(
     @InjectRepository(Orders)
     private readonly orderRepository: Repository<Orders>,
-  ) {}
+  ) { }
 
   public async create(orderDto: OrderDto): Promise<Orders> {
     try {
@@ -32,34 +32,31 @@ export class OrderService {
   public async findAll(query: any): Promise<any> {
     const objectWhere = {
       status: null,
-      // eslint-disable-next-line @typescript-eslint/camelcase
       client_name: null,
-      createdAt: null
+      created_at: null
     };
-    if(query.status != undefined){
+    if (query.status != undefined) {
       objectWhere.status = query.status;
     }
-    if(query.client != undefined){
-      // eslint-disable-next-line @typescript-eslint/camelcase
+    if (query.client != undefined) {
       objectWhere.client_name = query.client;
 
     }
-    if(query.data != undefined){
-      // objectWhere.createdAt = LessThan(query.data + ' 23:59:59')
-      objectWhere.createdAt = Between(query.data + ' 00:00:00', query.data + ' 23:59:59');
+    if (query.data != undefined) {
+      // objectWhere.created_at = LessThan(query.data + ' 23:59:59')
+      objectWhere.created_at = Between(query.data + ' 00:00:00', query.data + ' 23:59:59');
     }
 
     let where = {};
     where = Object.keys(objectWhere).filter((k) => objectWhere[k] != null)
-              .reduce((a, k) => ({ ...a, [k]: objectWhere[k] }), {});
+      .reduce((a, k) => ({ ...a, [k]: objectWhere[k] }), {});
 
-    const orders = await this.orderRepository.find({where, relations: ["orderToProducts"]});
+    const orders = await this.orderRepository.find({ where, relations: ["orderToProducts"] });
     return orders;
   }
 
   public async findPaged(query: any): Promise<IOrderPaged> {
     let { limit, page }: any = query;
-    // console.log(query);
     limit = parseInt(limit || 0);
     page = parseInt(page || 0);
 
@@ -69,42 +66,38 @@ export class OrderService {
 
     const objectWhere = {
       status: In([OrderStatus.ANDAMENTO, OrderStatus.INICIALIZADO, OrderStatus.PRONTO]),
-      // eslint-disable-next-line @typescript-eslint/camelcase
       client_name: null,
-      createdAt: null
+      created_at: null
     };
-    if(query.status != undefined){
+    if (query.status != undefined) {
       objectWhere.status = query.status;
     }
-    if(query.client != undefined){
-      // eslint-disable-next-line @typescript-eslint/camelcase
+    if (query.client != undefined) {
       objectWhere.client_name = query.client;
 
     }
-    if(query.data != undefined){
-      objectWhere.createdAt = Between(query.data + ' 00:00:00', query.data + ' 23:59:59');
+    if (query.data != undefined) {
+      objectWhere.created_at = Between(query.data + ' 00:00:00', query.data + ' 23:59:59');
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let where = {};
     where = Object.keys(objectWhere).filter((k) => objectWhere[k] != null)
-              .reduce((a, k) => ({ ...a, [k]: objectWhere[k] }), {});
+      .reduce((a, k) => ({ ...a, [k]: objectWhere[k] }), {});
 
     const ordersPaged = await this.orderRepository.find({
-      order: { createdAt: 'ASC' },
+      order: { created_at: 'ASC' },
       skip: offset,
       take: limit,
       where
     });
 
-    const total = await this.orderRepository.count({where});
+    const total = await this.orderRepository.count({ where });
     const totalPages = total > limit ? total / limit : 1;
     return { total, page, totalPages, limit, offset, instaces: ordersPaged }
   }
 
   public async findHistoricPaged(query: any): Promise<IOrderPaged> {
     let { limit, page }: any = query;
-    // console.log(query);
     limit = parseInt(limit || 0);
     page = parseInt(page || 0);
 
@@ -114,35 +107,32 @@ export class OrderService {
 
     const objectWhere = {
       status: In([OrderStatus.CANCELADO, OrderStatus.ENTREGUE]),
-      // eslint-disable-next-line @typescript-eslint/camelcase
       client_name: null,
-      createdAt: null
+      created_at: null
     };
-    if(query.status != undefined){
+    if (query.status != undefined) {
       objectWhere.status = query.status;
     }
-    if(query.client != undefined){
-      // eslint-disable-next-line @typescript-eslint/camelcase
+    if (query.client != undefined) {
       objectWhere.client_name = query.client;
 
     }
-    if(query.data != undefined){
-      objectWhere.createdAt = Between(query.data + ' 00:00:00', query.data + ' 23:59:59');
+    if (query.data != undefined) {
+      objectWhere.created_at = Between(query.data + ' 00:00:00', query.data + ' 23:59:59');
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let where = {};
     where = Object.keys(objectWhere).filter((k) => objectWhere[k] != null)
-              .reduce((a, k) => ({ ...a, [k]: objectWhere[k] }), {});
+      .reduce((a, k) => ({ ...a, [k]: objectWhere[k] }), {});
 
     const ordersPaged = await this.orderRepository.find({
-      order: { createdAt: 'ASC' },
+      order: { created_at: 'ASC' },
       skip: offset,
       take: limit,
       where
     });
 
-    const total = await this.orderRepository.count({where});
+    const total = await this.orderRepository.count({ where });
     const totalPages = total > limit ? total / limit : 1;
     return { total, page, totalPages, limit, offset, instaces: ordersPaged }
   }
@@ -174,11 +164,14 @@ export class OrderService {
   }
 
   public async findCount(): Promise<any> {
-    return await this.orderRepository.query(`
-      select count(id) as qtd
-      from orders
-      where status = 'entregue' AND createdAt >= NOW() - INTERVAL 1 DAY
-    `);
+    try {
+      return await this.orderRepository.query(`
+        select count(id) as qtd
+        from orders
+        where status = 'entregue' AND created_at >= NOW() - INTERVAL '1 DAY'
+      `);
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.BAD_REQUEST);
+    }
   }
-
 }

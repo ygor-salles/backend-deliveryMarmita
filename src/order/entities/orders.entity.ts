@@ -10,25 +10,25 @@ export class Orders {
   @Column()
   client_name: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   phone: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   cep: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   address_street: string;
 
-  @Column({nullable: true, type: 'int'})
+  @Column({ nullable: true, type: 'int' })
   address_number: number;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   address_neighborhood: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   address_city: string;
 
-  @Column({nullable: true, type: 'float'})
+  @Column({ nullable: true, type: 'real' })
   cost_freight: number;
 
   @Column()
@@ -37,51 +37,44 @@ export class Orders {
   @Column()
   withdrawal: string;
 
-  @Column({default: OrderStatus.INICIALIZADO})
+  @Column({ default: OrderStatus.INICIALIZADO })
   status: OrderStatus;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   reference_point: string;
 
-  @Column({nullable: true, type: 'float'})
+  @Column({ nullable: true, type: 'real' })
   change_of_money: number;
 
-  @Column('float')
+  @Column('real')
   total: number;
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 
-  @OneToMany(() => OrderProduct, orderToProduct => orderToProduct.orders, {eager: true})
+  @OneToMany(() => OrderProduct, orderToProduct => orderToProduct.orders, { eager: true })
   orderToProducts: OrderProduct[];
 
-  constructor(order?: Partial<Orders>){
+  constructor(order?: Partial<Orders>) {
     this.id = order?.id;
-    // eslint-disable-next-line @typescript-eslint/camelcase
     this.client_name = order?.client_name;
     this.phone = order?.phone;
     this.cep = order?.cep;
-    // eslint-disable-next-line @typescript-eslint/camelcase
     this.address_street = order?.address_street;
-    // eslint-disable-next-line @typescript-eslint/camelcase
     this.address_neighborhood = order?.address_neighborhood;
-    // eslint-disable-next-line @typescript-eslint/camelcase
     this.address_city = order?.address_city;
-    // eslint-disable-next-line @typescript-eslint/camelcase
     this.cost_freight = order?.cost_freight;
     this.payment = order?.payment;
     this.withdrawal = order?.withdrawal;
     this.status = order?.status;
-    // eslint-disable-next-line @typescript-eslint/camelcase
     this.reference_point = order?.reference_point;
-    // eslint-disable-next-line @typescript-eslint/camelcase
     this.change_of_money = order?.change_of_money;
     this.total = order?.total;
-    this.createdAt = order?.createdAt;
-    this.updatedAt = order?.updatedAt;
+    this.created_at = order?.created_at;
+    this.updated_at = order?.updated_at;
     this.orderToProducts = order?.orderToProducts;
   }
 }

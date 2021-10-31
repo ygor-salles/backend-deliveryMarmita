@@ -8,10 +8,10 @@ export class OrderProduct {
   id: number;
 
   @Column()
-  readonly orderId: number;
+  readonly order_id: number;
 
   @Column()
-  readonly productId: number
+  readonly product_id: number
 
   @Column()
   amount: number;
@@ -22,17 +22,17 @@ export class OrderProduct {
   @Column({ nullable: true })
   meet_options: string;
 
-  @Column('float')
+  @Column('real')
   total_item: number;
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @ManyToOne(() => Orders, (orders) => orders.orderToProducts)
-  @JoinColumn([{ name: "orderId", referencedColumnName: "id" }])
+  @JoinColumn([{ name: "order_id", referencedColumnName: "id" }])
   orders: Orders;
 
   @ManyToOne(() => Products, (products) => products.orderToProducts, { eager: true })
-  @JoinColumn([{ name: "productId", referencedColumnName: "id" }])
+  @JoinColumn([{ name: "product_id", referencedColumnName: "id" }])
   products: Products;
 }

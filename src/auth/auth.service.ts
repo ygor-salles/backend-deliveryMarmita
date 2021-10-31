@@ -1,16 +1,13 @@
 import {
-  Injectable,
-  UnprocessableEntityException,
-  UnauthorizedException,
+  Injectable, UnauthorizedException, BadRequestException
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CredentialsDto } from './dto/credentials.dto';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { Users } from 'src/users/entities/users.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
-import * as bcrypt from 'bcrypt';
-import { UserRole } from 'src/users/user-roles.enum';
+import { CredentialsDto } from './dto/credentials.dto';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +15,7 @@ export class AuthService {
     @InjectRepository(Users)
     private userRepository: Repository<Users>,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async signUp(createUserDto: CreateUserDto): Promise<Users> {
     createUserDto.password = bcrypt.hashSync(createUserDto.password, 8);
@@ -26,14 +23,14 @@ export class AuthService {
   }
 
   async signIn(credentialsDto: CredentialsDto) {
-    const user = await this.userRepository.findOne({ 
-      where :{
+    const user = await this.userRepository.findOne({
+      where: {
         email: credentialsDto.email
-      }  
+      }
     });
 
     if (!user) {
-      throw new UnauthorizedException('Credenciais inválidas');
+      throw new BadRequestException('Credenciais inválidas');
     }
 
     const passwordIsValid = bcrypt.compareSync(
@@ -42,7 +39,7 @@ export class AuthService {
     );
 
     if (!passwordIsValid) {
-      throw new UnauthorizedException('Credenciais inválidas');
+      throw new BadRequestException('Credenciais inválidas');
     }
 
     const jwtPayload = {

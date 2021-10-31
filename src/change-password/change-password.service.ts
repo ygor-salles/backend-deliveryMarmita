@@ -9,7 +9,7 @@ export class ChangePasswordService {
   constructor(
     private readonly usersService: UsersService,
     private readonly mailerService: MailerService,
-  ) {}
+  ) { }
 
   public async changePassword(
     changePasswordDto: ChangePasswordDto,
@@ -43,11 +43,9 @@ export class ChangePasswordService {
         },
       })
       .then(response => {
-        console.log(response);
         console.log('Change Password: Send Mail successfully!');
       })
       .catch(err => {
-        console.log(err);
         console.log('Change Password: Send Mail Failed!');
       });
   }

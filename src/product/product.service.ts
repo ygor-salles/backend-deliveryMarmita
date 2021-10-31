@@ -5,10 +5,10 @@ import { Repository } from 'typeorm';
 import { ProductDto } from './dto/product.dto';
 
 interface IProductPaged {
-  total: number; 
+  total: number;
   page: number;
   totalPages: number;
-  limit: number; 
+  limit: number;
   offset: number;
   instaces: Products[];
 }
@@ -18,7 +18,7 @@ export class ProductService {
   constructor(
     @InjectRepository(Products)
     private readonly productRepository: Repository<Products>
-  ) {}
+  ) { }
 
   public async create(productDto: ProductDto): Promise<Products> {
     try {
@@ -52,19 +52,19 @@ export class ProductService {
       size: null
     };
 
-    if(query.status != undefined){
+    if (query.status != undefined) {
       objectWhere.status = query.status;
     }
-    if(query.type != undefined){
+    if (query.type != undefined) {
       objectWhere.type = query.type;
     }
-    if(query.size != undefined){
+    if (query.size != undefined) {
       objectWhere.size = query.size;
     }
 
     let where = {};
     where = Object.keys(objectWhere).filter((k) => objectWhere[k] != null)
-              .reduce((a, k) => ({ ...a, [k]: objectWhere[k] }), {});
+      .reduce((a, k) => ({ ...a, [k]: objectWhere[k] }), {});
 
     const products = await this.productRepository.find(where);
     return products;
@@ -92,7 +92,7 @@ export class ProductService {
         }
       });
 
-      if(!product){
+      if (!product) {
         throw new NotFoundException(`Produto #${id} não encontrado`);
       }
 
@@ -109,12 +109,12 @@ export class ProductService {
 
     const productsPaged = await this.productRepository.find({
       where: { type },
-      order: { createdAt: 'ASC' },
+      order: { created_at: 'ASC' },
       skip: offset,
       take: limit,
     });
 
-    const total = await this.productRepository.count({where: {type}});
+    const total = await this.productRepository.count({ where: { type } });
     const totalPages = total > limit ? total / limit : 1;
     return { total, page, totalPages, limit, offset, instaces: productsPaged }
   }

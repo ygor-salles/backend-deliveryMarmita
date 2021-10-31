@@ -2,6 +2,9 @@
 /dist
 /node_modules
 
+# upload midias
+/src/product/images/*
+
 # Enviroment
 .env
 
