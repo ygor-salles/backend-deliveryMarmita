@@ -13,7 +13,7 @@ export class ForgotPasswordService {
     @InjectRepository(Users)
     private userRepository: Repository<Users>,
     private readonly mailerService: MailerService,
-  ) {}
+  ) { }
 
   public async forgotPassword(
     forgotPasswordDto: ForgotPasswordDto
@@ -41,7 +41,9 @@ export class ForgotPasswordService {
         template: path.resolve(__dirname, '..', '..', 'templates', 'emails', 'index'),
         context: {
           display: 'block',
-          host: 'http://localhost:4200/#/recuperar-senha',
+          host: process.env.NODE_ENV === 'development' ?
+            `${process.env.FRONTEND_DEV}/#/recuperar-senha`
+            : `${process.env.FRONTEND_PROD}/#/recuperar-senha`,
           title: 'Reset de senha!',
           description:
             'Senha alterada com sucesso! Seu código de verificação é: ' +
@@ -49,11 +51,9 @@ export class ForgotPasswordService {
         },
       })
       .then(async response => {
-        console.log(response);
         console.log('Forgot Password: Send Mail successfully!');
       })
       .catch(err => {
-        console.log(err);
         console.log('Forgot Password: Send Mail Failed!');
       });
   }
