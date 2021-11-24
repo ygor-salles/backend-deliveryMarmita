@@ -67,7 +67,9 @@ export class ProductController {
     @Body() productDto: ProductDto
   ): Promise<any> {
     try {
-      if (productDto.image) {
+      console.log('VAR FIREBASE', productDto.firebasePost)
+      if (productDto.image && !productDto.firebasePost) {
+        console.log('ENTROU....')
         const nameImage = (new Date()).valueOf().toString() + '.png';
 
         const base64Data = productDto.image.replace(/^data:image\/[a-z]+;base64,/, "");

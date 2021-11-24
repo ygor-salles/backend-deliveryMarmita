@@ -1,4 +1,4 @@
-import { MaxLength, IsString, IsNumber, IsEnum, IsBase64, ValidateIf, IsNotEmpty } from 'class-validator';
+import { MaxLength, IsString, IsNumber, IsEnum, IsBase64, ValidateIf, IsNotEmpty, IsBoolean } from 'class-validator';
 import { ProductSize } from '../product-size.enum';
 import { ProductType } from '../product-type.enum';
 
@@ -33,8 +33,10 @@ export class ProductDto {
   description: string;
 
   @ValidateIf(o => 'image' in o)
-  @IsBase64()
   image: any;
 
+  @IsNotEmpty({ message: 'Iforme status firebase' })
+  @IsBoolean()
+  firebasePost: boolean;
   // user: Users;
 }
