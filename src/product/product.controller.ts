@@ -67,7 +67,6 @@ export class ProductController {
     @Body() productDto: ProductDto
   ): Promise<any> {
     try {
-      console.log('VAR FIREBASE', productDto.firebasePost)
       if (productDto.image && !productDto.firebasePost) {
         console.log('ENTROU....')
         const nameImage = (new Date()).valueOf().toString() + '.png';
@@ -111,7 +110,7 @@ export class ProductController {
     try {
       const product = await this.productService.findById(product_id);
       if (product) {
-        if (productDto.image) {
+        if (productDto.image && !productDto.firebasePost) {
           console.log(product.image.split('images/'))
 
           if (product.image != null) {
