@@ -1,6 +1,6 @@
 # NestJSApiBoilerplateJWT
 
-API em NestJS. Aplicação backend para cadastramento de marmitas e bebidas, inclusão de fretes e adições as masmitas, visualização e filtragem de pedidos e histórico de pedidos, querys para dashboard.
+API in NestJS. Backend application for registration of lunchboxes and beverages, inclusion of freight and additions to lunchboxes, viewing and filtering orders and order history, dashboard queries.
 
 ## Installation
 
