@@ -1,11 +1,11 @@
 # NestJSApiBoilerplateJWT
 
-An API Boilerplate to create a ready-to-use REST API in seconds with NestJS 7.x and Passport Auth JWT System :heart_eyes_cat:
+API em NestJS. Aplicação backend para cadastramento de marmitas e bebidas, inclusão de fretes e adições as masmitas, visualização e filtragem de pedidos e histórico de pedidos, querys para dashboard.
 
 ## Installation
 
 ```bash
-   $ npm install
+   $ yarn
 ```
 
 ## Set Enviroment for secret key JWT
@@ -24,7 +24,7 @@ An API Boilerplate to create a ready-to-use REST API in seconds with NestJS 7.x 
 ```
 
 ## Config settings ormconfig.json for connect MySQL
-Once the database has been configured, start the Nest App via ```npm run start:dev``` it automatically synchronizes the entities so ready to use. :heart_eyes_cat:
+Once the database has been configured, start the Nest App via ```yarn start:dev``` it automatically synchronizes the entities so ready to use. :heart_eyes_cat:
 
 ```
 {
@@ -56,13 +56,13 @@ Once the database has been configured, start the Nest App via ```npm run start:d
 
 ```bash
     # development
-    $ npm run start
+    $ yarn start
 
     # watch mode
-    $ npm run start:dev
+    $ yarn start:dev
 
     # production mode
-    $ npm run start:prod
+    $ yarn start:prod
 ```
 
 ## Docker
@@ -74,3 +74,18 @@ There is a `docker-compose.yml` file for starting MySQL with Docker.
 After running, you can stop the Docker container with
 
 `$ docker-compose down`
+
+## Gerar o build
+
+```bash
+yarn build
+```
+
+## Modelagem da aplicação
+
+<img src="https://raw.githubusercontent.com/ygor-salles/backend-deliveryMarmita/main/assets/modeloBD.PNG"
+  alt="ModelagemBanco">
+  
+ ## Collection requests - insomnia
+ 
+ - The collections of the `Collection-Insomnia.json` backend requests are found inside the `assets` folder of this project.
