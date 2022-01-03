@@ -75,13 +75,13 @@ After running, you can stop the Docker container with
 
 `$ docker-compose down`
 
-## Gerar o build
+## Generate the build
 
 ```bash
 yarn build
 ```
 
-## Modelagem da aplicação
+## Application modeling
 
 <img src="https://raw.githubusercontent.com/ygor-salles/backend-deliveryMarmita/main/assets/modeloBD.PNG"
   alt="ModelagemBanco">
