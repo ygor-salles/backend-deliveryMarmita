@@ -1,58 +1,74 @@
-# NestJSApiBoilerplateJWT
+# backend-deliveryMarmita
 
-API in NestJS. Backend application for registration of lunchboxes and beverages, inclusion of freight and additions to lunchboxes, viewing and filtering orders and order history, dashboard queries.
+<h4 align="center">
+    :computer: Api Delivery de Marmita - Brasa Pousada Restaurante
+</h4>
 
-## Installation
+<p align="center">
+    <a href="#-projeto">Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    <a href="#rocket-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    <a href="#user-content-clipboard-instruções">Instruções</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    <a href="#-gerar-o-build">Build</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    <a href="#-ajustes-e-melhorias">Melhorias</a>
+</p>
+
+<div align="center">
+    <img alt="Modelagem" src="https://raw.githubusercontent.com/ygor-salles/backend-deliveryMarmita/main/assets/modeloBD.PNG" alt="ModelagemBanco" >
+</div>
+ 
+----
+ ## 💻 Projeto
+
+API no NestJS. Aplicativo backend para cadastro de marmitas e bebidas, inclusão de fretes e acréscimos de marmitas, visualização e filtragem de pedidos e histórico de pedidos, consultas de dashboard.
+
+---
+
+## :rocket: Tecnologias
+
+- [Typescript](https://www.typescriptlang.org/)
+- [NestJS](https://nestjs.com/)
+- [Typeorm](https://typeorm.io/)
+- [Docker](https://www.docker.com/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [bcryptJS](https://openbase.com/js/bcryptjs/documentation)
+- [handlebars](https://handlebarsjs.com/)
+- [nodemailer](https://nodemailer.com/about/)
+- [passport-jwt](http://www.passportjs.org/packages/passport-jwt/)
+- [jest](https://jestjs.io/pt-BR/)
+
+---
+
+## :clipboard: Instruções
+
+### VARIÁVEIS DE AMBIENTE
+
+- Criar na raiz da pasta do projeto um arquivo `.env` e preencher as informações conforme se encontra no arquivo `.env.example`.
+
+### DOCKER
+
+- Após preenchida as variáveis de ambiente, subir o container do docker pelo terminal com o comando:
 
 ```bash
-   $ yarn
+docker-compose up
 ```
 
-## Set Enviroment for secret key JWT
+- Para finalizar o processo do docker
 
 ```bash
-   $ cp .env.example .env
+docker-compose down
 ```
 
-## Config settings .env for send notification when a user registers, forgot password or change password
+### DEPENDÊNCIAS
 
-```
-   EMAIL_HOST=smtp.mailtrap.io
-   EMAIL_PORT=2525
-   EMAIL_AUTH_USER=[:user]
-   EMAIL_AUTH_PASSWORD=[:password]
-```
+- No terminal executar o comando para instalar as dependências:
 
-## Config settings ormconfig.json for connect MySQL
-Once the database has been configured, start the Nest App via ```yarn start:dev``` it automatically synchronizes the entities so ready to use. :heart_eyes_cat:
-
-```
-{
-   "type": "mysql",
-   "host": "localhost",
-   "port": 3306,
-   "username": "my_username",
-   "password": "my_password",
-   "database": "my_database",
-   "synchronize": true,
-   "logging": false,
-   "entities": [
-      "dist/**/*.entity.js"
-   ],
-   "migrations": [
-      "dist/migration/**/*.js"
-   ],
-   "subscribers": [
-      "dist/subscriber/**/*.js"
-   ],
-   "cli": {
-      "migrationsDir": "src/migration",
-      "subscribersDir": "src/subscriber"
-   }
-}
+```bash
+yarn
 ```
 
-## Running the app
+### START
+
+- Finalizado! Basta agora executar a aplicação backend com o seguinte comando:
 
 ```bash
     # development
@@ -65,27 +81,24 @@ Once the database has been configured, start the Nest App via ```yarn start:dev`
     $ yarn start:prod
 ```
 
-## Docker
+### Collection requests - insomnia
+ 
+ - As collections das requisições de backend `Collection-Insomnia.json` são encontradas dentro da pasta `assets` deste projeto.
 
-There is a `docker-compose.yml` file for starting MySQL with Docker.
 
-`$ docker-compose up`
+---
 
-After running, you can stop the Docker container with
-
-`$ docker-compose down`
-
-## Generate the build
+## 📬 Gerar o build
 
 ```bash
 yarn build
 ```
 
-## Application modeling
+---
 
-<img src="https://raw.githubusercontent.com/ygor-salles/backend-deliveryMarmita/main/assets/modeloBD.PNG"
-  alt="ModelagemBanco">
-  
- ## Collection requests - insomnia
- 
- - The collections of the `Collection-Insomnia.json` backend requests are found inside the `assets` folder of this project.
+## 📌 Ajustes e melhorias
+
+O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
+
+- [ ] Inserir regra do horário de funcionaento do restaurante
+- [ ] Configurar projeto para execução de migrations
